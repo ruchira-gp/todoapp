@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {getFirestore} from "firebase/firestore"
-//import Vuex from 'vuex'
+
 var firebaseConfig = {
     apiKey: "AIzaSyAmB8J_jy-pDWb1wiDjSDM0yiGdYlymUjk",
     authDomain: "todo-8a40d.firebaseapp.com",

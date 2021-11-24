@@ -5,6 +5,7 @@
       <div v-else>
         <ul>
           <todo-item
+            @click.native="deleteItem(todo)"
             v-for="(todo, index) in todoList"
             :key="index + '-todo'"
             :id="todo.id"
@@ -20,9 +21,8 @@
 <script>
 import HomeScreen from "./components/HomeScreen.vue";
 import TodoItem from "./components/todoItem.vue";
-import {db} from "./firebase"
-import {getDocs, collection} from "firebase/firestore"
-
+import { db } from "./firebase";
+import { getDocs, collection, deleteDoc, doc } from "firebase/firestore";
 
 export default {
   components: { HomeScreen, TodoItem },
@@ -33,20 +33,24 @@ export default {
     };
   },
   mounted() {
-    this.getList()
+    this.getList();
   },
   methods: {
     async getList() {
-     const querySnapshot = await getDocs(collection(db, "tasks"));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-      const x=doc.data();
-      this.todoList.push(x);
-      this.isLoading = false;
-    });
-    this.$forceUpdate();
+      const querySnapshot = await getDocs(collection(db, "tasks"));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+        const x = doc.data();
+        this.todoList.push(x);
+        this.isLoading = false;
+      });
+      this.$forceUpdate();
     },
-    
+    async deleteItem(docu) {
+      await deleteDoc(doc(db, "tasks", docu.id));
+      console.log("deleted");
+      this.$forceUpdate()
+    },
   },
 };
 </script>

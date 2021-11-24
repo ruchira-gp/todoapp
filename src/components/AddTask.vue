@@ -50,19 +50,30 @@
   </a>
 </template>
 <script>
-import { collection, addDoc } from "firebase/firestore";
+import { collection, setDoc , doc } from "firebase/firestore";
 import { db } from "../firebase";
 // import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 // import { doc, updateDoc } from "firebase/firestore";
 export default {
   methods: {
     async addTask() {
-      const docRef = await addDoc(collection(db, "tasks"), {
+      const newDocRef = doc(collection(db, "tasks"));
+      await setDoc(
+       newDocRef, 
+       {
+         id:newDocRef.id,
         title: this.taskTitle,
         desc: this.taskDesc,
         done: 0,
-      });
-      console.log("Document written with ID: ", docRef.id);
+       }
+   );
+      // const docRef = await addDoc(collection(db, "tasks"), {
+      //   id:docRef.id,
+      //   title: this.taskTitle,
+      //   desc: this.taskDesc,
+      //   done: 0,
+      // });
+      console.log("Document written with ID: ", newDocRef.id);
       this.done='';
       this.taskDesc='';
       this.taskTitle='';

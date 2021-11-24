@@ -1,5 +1,5 @@
 <template>
-    <li v-on:click=deleteItem>
+    <li @click="doThis(title)">
         <h1>{{title}}</h1>
         <h3>{{desc}}</h3>
     </li>
@@ -13,10 +13,11 @@ export default {
         id:String,
     },
     methods:{
-       deleteItem(){
-           this.$forceUpdate();
-       console.log('deleted');
-    }
+        doThis(id){
+            let x=id.toString();
+            console.log(x);
+        }
+
     }
 }
 </script>
