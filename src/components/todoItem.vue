@@ -1,22 +1,22 @@
 <template>
-    <li>
+    <li v-on:click=deleteItem>
         <h1>{{title}}</h1>
         <h3>{{desc}}</h3>
     </li>
 </template>
 <script>
 export default {
-    data(){
-
-    },
-    methods:{
-
-    },
     props:{
         title:String,
         desc:String,
-        done:Boolean,
+        done:Number,
         id:String,
+    },
+    methods:{
+       deleteItem(){
+           this.$forceUpdate();
+       console.log('deleted');
+    }
     }
 }
 </script>

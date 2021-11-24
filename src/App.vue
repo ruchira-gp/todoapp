@@ -1,64 +1,57 @@
 <template>
   <home-screen>
-    <ul>
-      <todo-item
-        v-for="todo in todoList"
-        v-bind:key="todo.id"
-        :id="todo.id"
-        :title="todo.title"
-        :desc="todo.desc"
-        :done="todo.done"
-      ></todo-item>
-    </ul>
+    <div>
+      <div v-if="isLoading">Loading...</div>
+      <div v-else>
+        <ul>
+          <todo-item
+            v-for="(todo, index) in todoList"
+            :key="index + '-todo'"
+            :id="todo.id"
+            :title="todo.title"
+            :desc="todo.desc"
+            :done="todo.done"
+          ></todo-item>
+        </ul>
+      </div>
+    </div>
   </home-screen>
 </template>
 <script>
 import HomeScreen from "./components/HomeScreen.vue";
 import TodoItem from "./components/todoItem.vue";
+import {db} from "./firebase"
+import {getDocs, collection} from "firebase/firestore"
+
 
 export default {
   components: { HomeScreen, TodoItem },
   data() {
     return {
-      todoList: [
-        {
-          id: "manuel",
-          title: "Manuel xxx",
-          desc: "0123 45678 90",
-          done: true,
-        },
-        {
-          id: "manuelyssssyyy",
-          title: "Manuel yyy",
-          desc: "0123 45678 90",
-          done: false,
-        },
-                {
-          id: "manueldsfsdfyyy",
-          title: "Manuel yyfdy",
-          desc: "0123 4567dd8 90",
-          done: false,
-        },
-                 {
-          id: "manuelyqqyyy",
-          title: "Manuelqq yyy",
-          desc: "0123 45qq678 90",
-          done: false,
-        },
-                 {
-          id: "manwdeuelyyyy",
-          title: "dddd yyy",
-          desc: "0123 45678 90",
-          done: false,
-        },
-      ],
+      todoList: [],
+      isLoading: false,
     };
+  },
+  mounted() {
+    this.getList()
+  },
+  methods: {
+    async getList() {
+     const querySnapshot = await getDocs(collection(db, "tasks"));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      const x=doc.data();
+      this.todoList.push(x);
+      this.isLoading = false;
+    });
+    this.$forceUpdate();
+    },
+    
   },
 };
 </script>
 <style scoped>
 * {
-  
   box-sizing: border-box;
 }
 html {
@@ -114,7 +107,7 @@ header {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
 }
 ul {
-  overflow:hidden;
+  overflow: hidden;
   list-style: none;
   margin: 0;
   padding: 0;
