@@ -1,4 +1,6 @@
 // todoList: [
+
+    // @click.native="deleteItem(todo.id)"
 //         {
 //           id: "manuel",
 //           title: "Manuel xxx",

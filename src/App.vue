@@ -36,6 +36,9 @@ export default {
     this.getList();
   },
   methods: {
+    reload() {
+      this.$forceUpdate();
+    },
     async getList() {
       const querySnapshot = await getDocs(collection(db, "tasks"));
       querySnapshot.forEach((doc) => {
@@ -49,7 +52,13 @@ export default {
     async deleteItem(docu) {
       await deleteDoc(doc(db, "tasks", docu.id));
       console.log("deleted");
-      this.$forceUpdate()
+      this.todoList = this.todoList.filter(() => {
+        return this.todoList.id !== docu;
+      });
+      this.$forceUpdate();
+      
+      // this.todoList = this.todoList.filter(this.todoList.id => this.todoList.id !== docu);
+      // this.todoList.remove();
     },
   },
 };

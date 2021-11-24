@@ -57,6 +57,7 @@ import { db } from "../firebase";
 export default {
   methods: {
     async addTask() {
+      this.modalShow=!this.modalShow
       const newDocRef = doc(collection(db, "tasks"));
       await setDoc(
        newDocRef, 
